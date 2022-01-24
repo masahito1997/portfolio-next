@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import Main from '../src/layout/main'
 
 import theme from '../src/lib/theme';
 import Fonts from '../src/lib/font';
@@ -10,7 +11,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={theme}>
       <Fonts />
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <Component {...pageProps} />
+      <Main>
+        <Component {...pageProps} />
+      </Main>
     </ChakraProvider>
   )
 }
