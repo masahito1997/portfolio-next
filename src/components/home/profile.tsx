@@ -7,7 +7,7 @@ const Profile: React.FC = () => {
 
   return (
     <Flex justifyContent='space-between' alignItems='flex-start' flexDirection='row' px={{ base: 0, md: 5 }} py={2}>
-      <Box>
+      <Box w='100%'>
         <Heading as='h2' size='lg' fontFamily='heading'>Masahito Osako</Heading>
         <Text fontSize={{ base: 'sm', md: 'md' }}>Backend Engineer / Frontend Engineer</Text>
       </Box>
