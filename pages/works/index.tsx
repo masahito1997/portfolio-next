@@ -4,13 +4,11 @@ import { EntryFields, Asset, Entry } from 'contentful'
 
 import contentfulClient from '../../src/lib/contentful_client'
 
-type WorkProps = {
-}
 type WorkState = {
   works: EntryFields.Array<EntryFields.Object>
   thumbnailLinks: { [key: string]: string }
 }
-export default class Work extends React.Component<WorkProps, WorkState> {
+export default class Work extends React.Component<{}, WorkState> {
   state: WorkState = {
     works: [],
     thumbnailLinks: {}
@@ -72,7 +70,7 @@ export default class Work extends React.Component<WorkProps, WorkState> {
 
                 return (
                   <LinkBox key={name} as='article' borderWidth='3px' rounded='md' h='auto' maxH={{ base: '400px', md: '500px' }} w={{ base: '100%', md: '45%' }} mb={{ base: 5, md: 0 }}>
-                    <Image borderBottomWidth='2px' src={thumbnail && thumbnail.sys.id ? (this.state.thumbnailLinks[thumbnail.sys.id]) : '/images/portfolio_icon1.jpg'} borderTopRadius='md' h='50%' w='100%' fit='fill' />
+                    <Image borderBottomWidth='2px' alt='thumbnail' src={thumbnail && thumbnail.sys.id ? (this.state.thumbnailLinks[thumbnail.sys.id]) : '/images/portfolio_icon1.jpg'} borderTopRadius='md' h='50%' w='100%' fit='fill' />
                     <Box p={4}>
                       <Heading as='h4' size='md' mb={2}>
                         <LinkOverlay href={link} isExternal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Heading, Flex, Tag, Text, Box, Code } from '@chakra-ui/react'
 
 import ReactMarkdown from 'react-markdown'
@@ -12,12 +12,6 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import contentfulClient from '../../src/lib/contentful_client'
 import markdownTheme from '../../src/lib/markdown_theme'
 
-type postType = {
-  title: string,
-  tags: string[],
-  markdown: string,
-  updatedAt: string
-}
 type blogDetailProps = {
   title: string,
   tags: string[],
@@ -76,7 +70,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, tags, markdown, updatedA
 export default BlogDetail
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id: string = String(params?.id)
+  const id: string = params ? String(params.id) : ''
 
   const post = await contentfulClient.getEntry(id)
     .then((response: Entry<EntryFields.Object>) => {
