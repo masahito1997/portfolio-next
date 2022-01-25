@@ -26,10 +26,10 @@ const Header: React.FC = () => {
           <HeaderLink href='/resume'>Resume</HeaderLink>
           <HeaderLink href='https://github.com/masahito1997' target='_blank'>Github</HeaderLink>
         </Stack>
-        <Box justifyContent='flex-end' display={{ base: 'flex', md: 'none' }}>
+        <Box display={{ base: 'block', md: 'none' }}>
           <Menu isLazy>
             <MenuButton icon={<HamburgerIcon />} as={IconButton} variant='outline' />
-            <MenuList>
+            <MenuList display='flex' justifyContent='flex-end' flexDirection='column'>
               <MenuItem as={HeaderLink} href='/'>TOP</MenuItem>
               <MenuItem as={HeaderLink} href='/works'>Works</MenuItem>
               <MenuItem as={HeaderLink} href='/posts'>Blogs</MenuItem>
