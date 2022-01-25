@@ -8,6 +8,7 @@ type MainProps = {
   children: React.ReactNode
 }
 const Main: React.FC<MainProps> = ({ children }) => {
+  const GA_ID = process.env.NEXT_PUBLIC_GA_ID
   return (
     <>
       <Head>
@@ -21,6 +22,17 @@ const Main: React.FC<MainProps> = ({ children }) => {
         <meta property="og:site_name" content="Masahito Osako's Homepage" />
         <meta property="og:type" content="website" />
         <title>Masahito Osako - Homepage</title>
+
+        { /* TODO: なぜかコンポーネント化したものを使用するとうまく表示されない */ }
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `
+        }} />
       </Head>
 
       <Box as='main' pb={8}>
