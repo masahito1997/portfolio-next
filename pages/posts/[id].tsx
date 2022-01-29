@@ -57,7 +57,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
 
   return (
     <>
-      <HeadContent title={`${title} - Love Beautiful Code`} description={description} tags={tags} />
+      <HeadContent title={`${title} - Love Beautiful Code`} description={description} keywords={tags} />
       <Box mb={{ base: 10, md: 20 }}>
         <Heading as='h1' size='xl' mb={{ base: 2, md: 4 }}>{title}</Heading>
         <Flex justifyContent='space-between' alignItems='flex-end'>

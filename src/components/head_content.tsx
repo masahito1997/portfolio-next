@@ -4,22 +4,22 @@ import Head from 'next/head'
 type HeadContentType = {
   title?: string,
   description?: string
-  tags?: string[]
+  keywords?: string[]
 }
 const DEFAULT_TITLE = 'Homepage - Love Beautiful Code'
 const DEFAULT_DESCRIPTION = 'Masahito Osako\'s Homepage'
-const DEFAULT_TAGS = ['']
-const HeadContent: React.FC<HeadContentType> = ({ title, description, tags }) => {
+const DEFAULT_KEYWORDS = ['']
+const HeadContent: React.FC<HeadContentType> = ({ title, description, keywords }) => {
   if (!title) title = DEFAULT_TITLE
   if (!description) description = DEFAULT_DESCRIPTION
-  if (!tags || tags.length) tags = DEFAULT_TAGS
+  if (!keywords || !keywords.length) keywords = DEFAULT_KEYWORDS
 
   return (
     <Head>
       <title>{title}</title>
       <meta property="og:site_name" content={title} />
       <meta name="description" content={description} />
-      <meta name="tags" content={tags.join()} />
+      <meta name="keywords" content={keywords.join()} />
     </Head>
   )
 }
