@@ -16,6 +16,8 @@ import markdownTheme from "../../src/lib/markdown_theme";
 import contentfulClient from "../../src/lib/contentful_client";
 import { Entry, EntryFields } from "contentful";
 
+import HeadContent from '../../src/components/head_content'
+
 type resumeContentType = {
   markdown: string;
 };
@@ -38,6 +40,7 @@ const Resume: React.FC<resumeContentType> = ({ markdown }) => {
 
   return (
     <>
+      <HeadContent title='Resume - Love Beautiful Code' description="職務経歴書" />
       <div
         ref={resumeRef}
         style={{ marginBottom: "50px" }}

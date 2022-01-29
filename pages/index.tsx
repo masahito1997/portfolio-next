@@ -7,15 +7,20 @@ import Bio from '../src/components/home/bio'
 import Skill from '../src/components/home/skill'
 import Love from '../src/components/home/love'
 
+import HeadContent from '../src/components/head_content'
+
 const Home: NextPage = () => {
   return (
-    <Box>
-      <Profile />
-      <Work />
-      <Bio />
-      <Skill />
-      <Love />
-    </Box>
+    <>
+      <HeadContent />
+      <Box>
+        <Profile />
+        <Work />
+        <Bio />
+        <Skill />
+        <Love />
+      </Box>
+    </>
   )
 }
 export default Home

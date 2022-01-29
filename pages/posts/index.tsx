@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { EntryFields } from 'contentful'
 
 import contentfulClient from '../../src/lib/contentful_client'
+import HeadContent from '../../src/components/head_content'
 
 type blogCardProps = {
   id: string,
@@ -54,19 +55,22 @@ const BlogList: React.FC = () => {
   }, [])
 
   return (
-    posts.length ? (
-      <>
-        {posts.map((post: EntryFields.Object) => {
-          const { id, updatedAt } = post.sys
-          const { title, description, tags } = post.fields
+    <>
+      <HeadContent title='記事一覧 - Love Beautiful Code' description='記事一覧' />
+      {posts.length ? (
+        <>
+          {posts.map((post: EntryFields.Object) => {
+            const { id, updatedAt } = post.sys
+            const { title, description, tags } = post.fields
 
-          return <BlogCard key={id} id={id} title={title} description={description} tags={tags} updatedAt={updatedAt} />
-        })
-      }
-      </>
-    ) : (
-      <Text fontSize='sm' color='gray.400' textAlign='center'>現在、表示できる記事が存在しません</Text>
-    )
+            return <BlogCard key={id} id={id} title={title} description={description} tags={tags} updatedAt={updatedAt} />
+          })
+        }
+        </>
+      ) : (
+        <Text fontSize='sm' color='gray.400' textAlign='center'>現在、表示できる記事が存在しません</Text>
+      )}
+    </>
   )
 }
 export default BlogList

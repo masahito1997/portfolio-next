@@ -12,13 +12,16 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import contentfulClient from '../../src/lib/contentful_client'
 import markdownTheme from '../../src/lib/markdown_theme'
 
+import HeadContent from '../../src/components/head_content'
+
 type blogDetailProps = {
   title: string,
+  description: string,
   tags: string[],
   markdown: string,
   updatedAt: string
 }
-const BlogDetail: React.FC<blogDetailProps> = ({ title, tags, markdown, updatedAt }) => {
+const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markdown, updatedAt }) => {
   const customMarkdownTheme = {
     ...markdownTheme,
     code: (props: any) => {    // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -54,6 +57,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, tags, markdown, updatedA
 
   return (
     <>
+      <HeadContent title={`${title} - Love Beautiful Code`} description={description} tags={tags} />
       <Box mb={{ base: 10, md: 20 }}>
         <Heading as='h1' size='xl' mb={{ base: 2, md: 4 }}>{title}</Heading>
         <Flex justifyContent='space-between' alignItems='flex-end'>
@@ -74,10 +78,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const post = await contentfulClient.getEntry(id)
     .then((response: Entry<EntryFields.Object>) => {
-      const { title, tags, markdown } = response.fields
+      const { title, description, tags, markdown } = response.fields
       const updatedAt = new Date(response.sys.updatedAt).toLocaleDateString('ja-JP')
 
-      return { title, tags, markdown, updatedAt }
+      return { title, description, tags, markdown, updatedAt }
     })
     .catch(err => {
       console.error(err)
