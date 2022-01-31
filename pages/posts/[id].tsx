@@ -33,6 +33,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
       if (languageMatch) {
         language = languageMatch[1]
       }
+      if (children[0] || children[0].length) children[0] = children[0].replace(/\n$/, "")
       return (
         <SyntaxHighlighter
           style={atomOneDark}
