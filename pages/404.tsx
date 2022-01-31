@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Heading, Box, Text } from '@chakra-ui/react'
 
-const custom_404: React.FC = () => {
+const custom404: React.FC = () => {
   return (
     <Box>
       <Heading as='h2' size='4xl' textAlign='center' mb={2}>404</Heading>
@@ -12,4 +12,4 @@ const custom_404: React.FC = () => {
     </Box>
   )
 }
-export default custom_404
+export default custom404
