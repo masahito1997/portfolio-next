@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Text, LinkBox, Heading, Flex, Box, Tag } from '@chakra-ui/react'
 import Link from 'next/link'
 
-import { EntryFields } from 'contentful'
+import { EntryCollection, EntryFields } from 'contentful'
+
+import { GetServerSideProps } from 'next'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import HeadContent from '../../src/components/head_content'
@@ -35,34 +37,17 @@ const BlogCard: React.FC<blogCardProps> = ({ id, title, tags, description='', up
   )
 }
 
-const BlogList: React.FC = () => {
-  const [posts, setPosts] = useState<EntryFields.Array<EntryFields.Object>>([])
-  const [page] = useState(1)
-
-  useEffect(() => {
-    const f = async () => {
-      const query = {
-        content_type: 'blog',
-        limit: 10,
-        order: '-sys.createdAt',
-        skip: page - 1
-      }
-      await contentfulClient.getEntries(query)
-        .then(response => setPosts(response.items))
-        .catch(err => console.error(err))
-    }
-    f()
-  }, [])
-
+type blogListType = {
+  posts: blogCardProps[]
+}
+const BlogList: React.FC<blogListType> = ({ posts }) => {
   return (
     <>
       <HeadContent title='記事一覧 - Love Beautiful Code' description='記事一覧' />
       {posts.length ? (
         <>
-          {posts.map((post: EntryFields.Object) => {
-            const { id, updatedAt } = post.sys
-            const { title, description, tags } = post.fields
-
+          {posts.map(post => {
+            const { id, title, description, updatedAt, tags } = post
             return <BlogCard key={id} id={id} title={title} description={description} tags={tags} updatedAt={updatedAt} />
           })
         }
@@ -74,3 +59,22 @@ const BlogList: React.FC = () => {
   )
 }
 export default BlogList
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const query = {
+    content_type: 'blog',
+    limit: 10,
+    order: '-sys.createdAt'
+  }
+  const items = await contentfulClient.getEntries(query)
+    .then((response: EntryCollection<EntryFields.Object>) => response.items)
+    .catch(err => console.error(err))
+
+  if (!items) return { notFound: true }
+  const posts = items.map(item => {
+    const { id, updatedAt } = item.sys
+    const { title, description, tags } = item.fields
+    return { id, updatedAt, title, description, tags }
+  })
+  return { props: { posts: posts } }
+}
