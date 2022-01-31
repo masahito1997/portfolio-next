@@ -4,10 +4,10 @@ import { Heading, Flex, Tag, Text, Box, Code } from '@chakra-ui/react'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
-import { Entry, EntryFields, EntryCollection } from 'contentful'
+import { Entry, EntryFields } from 'contentful'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
-import { GetStaticProps, GetStaticPaths } from 'next'
+import { GetServerSideProps } from 'next'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import markdownTheme from '../../src/lib/markdown_theme'
@@ -73,7 +73,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
 }
 export default BlogDetail
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id: string = params ? String(params.id) : ''
 
   const post = await contentfulClient.getEntry(id)
@@ -88,16 +88,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return { notFound: true }
     })
   return { props: post }
-}
-export const getStaticPaths: GetStaticPaths = async () => {
-  const query = {
-    content_type: 'blog',
-    order: '-sys.createdAt',
-  }
-  const { items }: EntryCollection<EntryFields.Object> = await contentfulClient.getEntries(query)
-  const paths = items.map(item => ({ params: { id: item.sys.id } }))
-  return {
-    paths,
-    fallback: false
-  }
 }
