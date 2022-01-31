@@ -26,7 +26,7 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
     ...markdownTheme,
     code: (props: any) => {    // eslint-disable-line @typescript-eslint/no-explicit-any
       const { inline, children, className } = props
-      if (inline) return <Code p={2}>{children}</Code>
+      if (inline) return <Tag colorScheme='red' mb={1}>{children}</Tag>
 
       const languageMatch = className.match(/language-(\w+)/)
       let language = ''
