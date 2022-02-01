@@ -8,6 +8,7 @@ import { GetServerSideProps } from 'next'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import HeadContent from '../../src/components/head_content'
+import Paginator from '../../src/components/pagination/paginator'
 
 type blogCardProps = {
   id: string,
@@ -38,9 +39,12 @@ const BlogCard: React.FC<blogCardProps> = ({ id, title, tags, description='', up
 }
 
 type blogListType = {
-  posts: blogCardProps[]
+  posts: blogCardProps[],
+  total: number,
+  currentPage: number,
+  limit: number
 }
-const BlogList: React.FC<blogListType> = ({ posts }) => {
+const BlogList: React.FC<blogListType> = ({ posts, total, currentPage, limit }) => {
   return (
     <>
       <HeadContent title='記事一覧 - Love Beautiful Code' description='記事一覧' />
@@ -49,8 +53,10 @@ const BlogList: React.FC<blogListType> = ({ posts }) => {
           {posts.map(post => {
             const { id, title, description, updatedAt, tags } = post
             return <BlogCard key={id} id={id} title={title} description={description} tags={tags} updatedAt={updatedAt} />
-          })
-        }
+          })}
+          <Box mt={8}>
+            <Paginator path='/posts' total={total} currentPage={currentPage} limit={limit} />
+          </Box>
         </>
       ) : (
         <Text fontSize='sm' color='gray.400' textAlign='center'>現在、表示できる記事が存在しません</Text>
@@ -60,21 +66,25 @@ const BlogList: React.FC<blogListType> = ({ posts }) => {
 }
 export default BlogList
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const query = {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const CONTENT_LIMIT = 10
+  const page = Number(query?.page || 1)
+  const contentfulQuery = {
     content_type: 'blog',
-    limit: 10,
-    order: '-sys.createdAt'
+    limit: CONTENT_LIMIT,
+    order: '-sys.createdAt',
+    skip: (page - 1) * CONTENT_LIMIT
   }
-  const items = await contentfulClient.getEntries(query)
-    .then((response: EntryCollection<EntryFields.Object>) => response.items)
+  const response = await contentfulClient.getEntries(contentfulQuery)
+    .then((response: EntryCollection<EntryFields.Object>) => response)
     .catch(err => console.error(err))
-
+  const items = response?.items
+  const total = response?.total
   if (!items) return { notFound: true }
   const posts = items.map(item => {
     const { id, updatedAt } = item.sys
     const { title, description, tags } = item.fields
     return { id, updatedAt, title, description, tags }
   })
-  return { props: { posts: posts } }
+  return { props: { posts: posts, currentPage: page, total, limit: CONTENT_LIMIT } }
 }
