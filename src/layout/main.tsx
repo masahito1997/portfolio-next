@@ -15,7 +15,7 @@ const Main: React.FC<MainProps> = ({ children }) => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Masahito Osako" />
-        <meta name="author" content="masahito1997" />
+        <meta name="author" content="m11o" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <meta property="og:type" content="website" />
