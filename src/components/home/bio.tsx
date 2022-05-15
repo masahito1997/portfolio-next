@@ -37,6 +37,7 @@ const Bio: React.FC = () => (
       <BioItem year='2018'>フリーランスとして様々な企業のプロジェクトに参画</BioItem>
       <BioItem year='2019'>大学復学のため、福岡移住。フリーランスとしての活動は継続。</BioItem>
       <BioItem year='2021'>九州大学 行動神経科学研究室 所属</BioItem>
+      <BioItem year='2022'>ヘイ株式会社 入社</BioItem>
     </Flex>
   </PanelContainer>
 )
