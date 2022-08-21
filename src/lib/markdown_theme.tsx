@@ -7,13 +7,20 @@ type headingThemeProps = {
   level: number,
   children?: React.ReactNode
 }
-const headingTheme: React.FC<headingThemeProps> = (props, as) => {
+const headingTheme: React.FC<headingThemeProps> = (props, as: any) => {
   const { level, children } = props
   const sizes = ['xl', 'lg', 'md', 'sm', 'xs', 'xs']
-  const marginTop = as == 'h1' || as == 'h2' ? 10 : 4
+  let marginTop
+  if (['h1', 'h2'].includes(as)) {
+    marginTop = 10
+  } else if (['h3', 'h4'].includes(as)) {
+    marginTop = 6
+  } else {
+    marginTop = 4
+  }
   return (
     <Heading
-      mb={2}
+      mb={4}
       mt={marginTop}
       size={sizes[level-1]}
       as={as}
