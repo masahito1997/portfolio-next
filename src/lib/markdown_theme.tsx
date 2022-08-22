@@ -7,7 +7,7 @@ type headingThemeProps = {
   level: number,
   children?: React.ReactNode
 }
-const headingTheme: React.FC<headingThemeProps> = (props, as: any) => {
+const headingTheme: React.FC<headingThemeProps> = (props, as) => {
   const { level, children } = props
   const sizes = ['xl', 'lg', 'md', 'sm', 'xs', 'xs']
   let marginTop
@@ -24,6 +24,8 @@ const headingTheme: React.FC<headingThemeProps> = (props, as: any) => {
       mt={marginTop}
       size={sizes[level-1]}
       as={as}
+      pb={as === 'h2' ? 2 : 0}
+      borderBottomWidth={as === 'h2' ? 1 : 0}
     >
       {children}
     </Heading>
