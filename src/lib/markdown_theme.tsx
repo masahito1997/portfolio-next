@@ -14,9 +14,9 @@ const headingTheme: React.FC<headingThemeProps> = (props, as) => {
   if (['h1', 'h2'].includes(as)) {
     marginTop = 10
   } else if (['h3', 'h4'].includes(as)) {
-    marginTop = 6
+    marginTop = 8
   } else {
-    marginTop = 4
+    marginTop = 6
   }
   return (
     <Heading
