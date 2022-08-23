@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Flex, Tag, Text, Box, Code } from '@chakra-ui/react'
+import {Heading, Flex, Tag, Text, Box, Code, OrderedList, ListItem, Table} from '@chakra-ui/react'
 
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -11,6 +11,7 @@ import { GetServerSideProps } from 'next'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import markdownTheme from '../../src/lib/markdown_theme'
+import { LiProps, OrderedListProps, ReactMarkdownProps } from 'react-markdown/lib/ast-to-react'
 
 import HeadContent from '../../src/components/head_content'
 
@@ -53,7 +54,11 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
           {children}
         </SyntaxHighlighter>
       )
-    }
+    },
+    p: (props: ReactMarkdownProps) => <Text mb={4}>{props.children}</Text>,
+    ol: (props: OrderedListProps) => <OrderedList mb={4}>{props.children}</OrderedList>,
+    li: (props: LiProps) => <ListItem mb={2}>{props.children}</ListItem>,
+    table: (props: ReactMarkdownProps) => <Table mb={4}>{props.children}</Table>
   }
 
   return (
