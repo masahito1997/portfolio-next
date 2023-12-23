@@ -10,7 +10,7 @@ type HeaderLinkProps = {
   target?: string
 }
 const HeaderLink: React.FC<HeaderLinkProps> = ({ href, target = '_self', children }) => {
-  return target == '_blank' ? <ChakraLink href={href} isExternal p={2}>{children}</ChakraLink> : <Link href={href} passHref><ChakraLink p={2}>{children}</ChakraLink></Link>
+  return <ChakraLink href={href} p={2} isExternal={target === '_blank'}>{children}</ChakraLink>
 }
 
 const Header: React.FC = () => {
