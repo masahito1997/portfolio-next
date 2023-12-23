@@ -11,7 +11,6 @@ import { GetServerSideProps } from 'next'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import markdownTheme from '../../src/lib/markdown_theme'
-import { LiProps, OrderedListProps, ReactMarkdownProps } from 'react-markdown/lib/ast-to-react'
 
 import HeadContent from '../../src/components/head_content'
 
@@ -25,40 +24,10 @@ type blogDetailProps = {
 const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markdown, updatedAt }) => {
   const customMarkdownTheme = {
     ...markdownTheme,
-    code: (props: any) => {    // eslint-disable-line @typescript-eslint/no-explicit-any
-      const { inline, children, className } = props
-      if (inline) return <Tag colorScheme='red' mb={1}>{children}</Tag>
-
-      const languageMatch = className.match(/language-(\w+)/)
-      let language = ''
-      if (languageMatch) {
-        language = languageMatch[1]
-      }
-      if (children[0] || children[0].length) children[0] = children[0].replace(/\n$/, "")
-      return (
-        <SyntaxHighlighter
-          style={atomOneDark}
-          customStyle={{ margin: '18px 0' }}
-          language={language}
-          codeTagProps={{ style: {
-            padding: '10px',
-            margin: '15px 0',
-            display: 'block',
-            backgroundColor: 'gray.600',
-            borderRadius: '3px',
-            overflowX: 'auto'
-          } }}
-          PreTag={React.Fragment}
-          CodeTag={Code}
-        >
-          {children}
-        </SyntaxHighlighter>
-      )
-    },
-    p: (props: ReactMarkdownProps) => <Text mb={4}>{props.children}</Text>,
-    ol: (props: OrderedListProps) => <OrderedList mb={4}>{props.children}</OrderedList>,
-    li: (props: LiProps) => <ListItem mb={2}>{props.children}</ListItem>,
-    table: (props: ReactMarkdownProps) => <Table mb={4}>{props.children}</Table>
+    p: (props: any) => <Text mb={4}>{props.children}</Text>,
+    ol: (props: any) => <OrderedList mb={4}>{props.children}</OrderedList>,
+    li: (props: any) => <ListItem mb={2}>{props.children}</ListItem>,
+    table: (props: any) => <Table mb={4}>{props.children}</Table>
   }
 
   return (
