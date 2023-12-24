@@ -1,21 +1,23 @@
 import React from 'react'
 
-import { Flex, Box, Heading, Text, Avatar, useBreakpointValue } from '@chakra-ui/react'
-
 const Profile: React.FC = () => {
-  // NOTE: next.jsが一番最初のrenderingのとき、useBreakpointValueはundefinedを返す。そのため、defaultの値を指定する必要がある
-  const avatarSize = useBreakpointValue({ base: 'xl', md: '2xl' }) || '2xl'
-
   return (
-    <Flex justifyContent='space-between' alignItems='flex-start' flexDirection='row' px={{ base: 0, md: 5 }} py={2}>
-      <Box w='100%'>
-        <Heading as='h2' size='lg' fontFamily='heading'>Masahito Osako</Heading>
-        <Text fontSize={{ base: 'sm', md: 'md' }}>Backend Engineer / Frontend Engineer</Text>
-      </Box>
-      <Box>
-        <Avatar size={avatarSize} showBorder src='/images/portfolio_icon1.jpg' />
-      </Box>
-    </Flex>
+    <div className='flex justify-between items-start flex-row px-0 md:px-5 py-2'>
+      <div className='w-full'>
+        <h2 className='text-3xl font-bold'>Masahito Osako</h2>
+        <p className='font-sm md:font-md mt-1'>
+          Backend Engineer
+          <span className='mx-1 md:mx-2'>/</span>
+          <br className='block md:hidden' />
+          Frontend Engineer
+        </p>
+      </div>
+      <div>
+        <span className='inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32'>
+          <img className='w-full h-full rounded-full object-cover' src='/images/portfolio_icon1.jpg' />
+        </span>
+      </div>
+    </div>
   )
 }
 export default Profile
