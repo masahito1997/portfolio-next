@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Heading } from "@chakra-ui/react";
 import { Components } from 'react-markdown'

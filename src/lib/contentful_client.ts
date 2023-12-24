@@ -1,3 +1,5 @@
+'use client'
+
 import * as contentful from 'contentful'
 
 // TODO: add environments

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { SitemapStream, streamToPromise } from "sitemap"
 
 import { EntryFields, EntryCollection } from "contentful";
-import contentfulClient from "../../src/lib/contentful_client";
+import contentfulClient from "../../../src/lib/contentful_client";
 
 const defaultPages = [
   { url: '/', changefreq: 'weekly', priority: 1.0 },
@@ -10,7 +10,7 @@ const defaultPages = [
   { url: '/posts', changefreq: 'daily' },
   { url: 'resume', changefreq: 'monthly' }
 ]
-const sitemap = async (_: NextApiRequest, res: NextApiResponse<string>) => {
+const page = async (_: NextApiRequest, res: NextApiResponse<string>) => {
   try {
     const sitemapStream = new SitemapStream({ hostname: process.env.NEXT_PUBLIC_HOST })
     const query = { content_type: 'blog', order: '-sys.createdAt' }
@@ -37,4 +37,4 @@ const sitemap = async (_: NextApiRequest, res: NextApiResponse<string>) => {
     res.send(JSON.stringify(err))
   }
 }
-export default sitemap
+export default page

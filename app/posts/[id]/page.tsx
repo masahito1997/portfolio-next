@@ -1,18 +1,14 @@
 import React from 'react'
-import {Heading, Flex, Tag, Text, Box, Code, OrderedList, ListItem, Table} from '@chakra-ui/react'
+import {Heading, Flex, Tag, Text, Box, OrderedList, ListItem, Table} from '@chakra-ui/react'
 
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Entry, EntryFields } from 'contentful'
-import SyntaxHighlighter from 'react-syntax-highlighter'
-import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
-import { GetServerSideProps } from 'next'
+import { useSearchParams, notFound } from 'next/navigation'
 
-import contentfulClient from '../../src/lib/contentful_client'
-import markdownTheme from '../../src/lib/markdown_theme'
-
-import HeadContent from '../../src/components/head_content'
+import contentfulClient from '../../../src/lib/contentful_client'
+import markdownTheme from '../../../src/lib/markdown_theme'
 
 type blogDetailProps = {
   title: string,
@@ -21,7 +17,30 @@ type blogDetailProps = {
   markdown: string,
   updatedAt: string
 }
-const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markdown, updatedAt }) => {
+
+const getBlog = async (id: string) => {
+
+  return await contentfulClient.getEntry(id)
+    .then((response: Entry<EntryFields.Object>) => {
+      const { title, description, tags, markdown } = response.fields
+      const updatedAt = new Date(response.sys.updatedAt).toLocaleDateString('ja-JP')
+
+      return { title, description, tags, markdown, updatedAt }
+    })
+    .catch(err => {
+      console.error(err)
+      return { notFound: true, title: '', description: '', tags: [], markdown: '', updatedAt: '' }
+    })
+}
+
+const BlogDetail = async () => {
+  const searchParams = useSearchParams();
+  if (!searchParams) return notFound();
+
+  const id = searchParams.get('id')!;
+
+  const { title, description, tags, markdown, updatedAt }: blogDetailProps = await getBlog(id);
+
   const customMarkdownTheme = {
     ...markdownTheme,
     p: (props: any) => <Text mb={4}>{props.children}</Text>,
@@ -32,7 +51,6 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
 
   return (
     <>
-      <HeadContent title={`${title} - Love Beautiful Code`} description={description} keywords={tags} />
       <Box mb={{ base: 10, md: 20 }}>
         <Heading as='h1' size='xl' mb={{ base: 2, md: 4 }}>{title}</Heading>
         <Flex justifyContent='space-between' alignItems='flex-end'>
@@ -47,20 +65,3 @@ const BlogDetail: React.FC<blogDetailProps> = ({ title, description, tags, markd
   )
 }
 export default BlogDetail
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const id: string = params ? String(params.id) : ''
-
-  const post = await contentfulClient.getEntry(id)
-    .then((response: Entry<EntryFields.Object>) => {
-      const { title, description, tags, markdown } = response.fields
-      const updatedAt = new Date(response.sys.updatedAt).toLocaleDateString('ja-JP')
-
-      return { title, description, tags, markdown, updatedAt }
-    })
-    .catch(err => {
-      console.error(err)
-      return { notFound: true }
-    })
-  return { props: post }
-}

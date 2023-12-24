@@ -1,3 +1,5 @@
+'use server'
+
 import React from 'react'
 
 import { Flex, Box, Heading, Text, Avatar, useBreakpointValue } from '@chakra-ui/react'

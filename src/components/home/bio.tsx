@@ -1,3 +1,5 @@
+'use server'
+
 import React from 'react'
 
 import { Flex, Text, Badge, Link } from '@chakra-ui/react'

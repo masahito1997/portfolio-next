@@ -1,3 +1,5 @@
+'use server'
+
 import React from 'react'
 
 import { Flex, Text, Box, Progress } from '@chakra-ui/react'

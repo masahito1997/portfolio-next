@@ -1,8 +1,9 @@
+'use client'
+
 import React from 'react'
 
 import { Box, Heading, Stack, useColorModeValue, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, useColorMode, Link as ChakraLink } from '@chakra-ui/react'
 import { HamburgerIcon, SunIcon, MoonIcon } from '@chakra-ui/icons'
-import Link from 'next/link'
 
 type HeaderLinkProps = {
   href: string,

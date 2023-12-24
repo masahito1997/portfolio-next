@@ -1,8 +1,10 @@
+'use client'
+
 import React from 'react'
 
 import { Box, Heading } from '@chakra-ui/react'
 
-const custom500: React.FC = () => {
+const Error: React.FC = () => {
   return (
     <Box>
       <Heading as='h2' size='4xl' textAlign='center' mb={2}>500</Heading>
@@ -10,4 +12,4 @@ const custom500: React.FC = () => {
     </Box>
   )
 }
-export default custom500
+export default Error

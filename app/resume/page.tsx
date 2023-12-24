@@ -10,20 +10,33 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { Button, Center } from "@chakra-ui/react";
 import { DownloadIcon } from "@chakra-ui/icons";
 
-import { GetStaticProps } from "next";
-
 import markdownTheme from "../../src/lib/markdown_theme";
 import contentfulClient from "../../src/lib/contentful_client";
 import { Entry, EntryFields } from "contentful";
+import {Metadata} from "next";
 
-import HeadContent from '../../src/components/head_content'
+const getResume = async () => {
+  const id = String(process.env.NEXT_PUBLIC_RESUME_CONTENTFUL_ID);
+  return await contentfulClient
+    .getEntry(id)
+    .then((response: Entry<EntryFields.Object>) => {
+      const { markdown }: { markdown: string } = response.fields;
+      return { markdown };
+    })
+    .catch((err) => {
+      console.error(err);
+      return { markdown: '' };
+    });
+}
 
-type resumeContentType = {
-  markdown: string;
+export const metadata: Metadata = {
+  title: "Resume - Love Beautiful Code",
+  description: "職務経歴書",
 };
 
-const Resume: React.FC<resumeContentType> = ({ markdown }) => {
+const Resume = async () => {
   const resumeRef = useRef<HTMLDivElement>(null);
+  const { markdown } = await getResume();
 
   const printContent = useCallback(
     () => resumeRef.current,
@@ -40,7 +53,6 @@ const Resume: React.FC<resumeContentType> = ({ markdown }) => {
 
   return (
     <>
-      <HeadContent title='Resume - Love Beautiful Code' description="職務経歴書" />
       <div
         ref={resumeRef}
         style={{ marginBottom: "50px" }}
@@ -65,18 +77,3 @@ const Resume: React.FC<resumeContentType> = ({ markdown }) => {
   );
 };
 export default Resume;
-
-export const getStaticProps: GetStaticProps = async () => {
-  const id = String(process.env.NEXT_PUBLIC_RESUME_CONTENTFUL_ID);
-  const resume = await contentfulClient
-    .getEntry(id)
-    .then((response: Entry<EntryFields.Object>) => {
-      const { markdown } = response.fields;
-      return { markdown };
-    })
-    .catch((err) => {
-      console.error(err);
-      return { notFound: true };
-    });
-  return { props: resume };
-};

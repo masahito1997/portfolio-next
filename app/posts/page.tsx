@@ -1,14 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Text, LinkBox, Heading, Flex, Box, Tag } from '@chakra-ui/react'
 import Link from 'next/link'
 
 import { EntryCollection, EntryFields } from 'contentful'
 
-import { GetServerSideProps } from 'next'
-
 import contentfulClient from '../../src/lib/contentful_client'
-import HeadContent from '../../src/components/head_content'
 import Paginator from '../../src/components/pagination/paginator'
+import {useSearchParams} from "next/navigation";
+import {Metadata} from "next";
 
 type blogCardProps = {
   id: string,
@@ -17,6 +16,34 @@ type blogCardProps = {
   description?: string,
   updatedAt: string
 }
+
+const POSTS_PER_PAGE = 10
+
+const getPosts = async (currentPage?: number) => {
+  const page = Number(currentPage || 1)
+  const contentfulQuery = {
+    content_type: 'blog',
+    limit: POSTS_PER_PAGE,
+    order: '-sys.createdAt',
+    skip: (page - 1) * POSTS_PER_PAGE
+  }
+
+  const response = await contentfulClient.getEntries(contentfulQuery)
+    .then((response: EntryCollection<EntryFields.Object>) => response)
+    .catch(err => console.error(err))
+  const items = response?.items
+  if (!items) return { posts: [], total: 0, currentPage: page }
+
+  const total = response?.total
+
+  const posts = items.map(item => {
+    const { id, updatedAt } = item.sys
+    const { title, description, tags } = item.fields
+    return { id, updatedAt, title, description, tags }
+  })
+  return { posts, total, currentPage: page }
+}
+
 const BlogCard: React.FC<blogCardProps> = ({ id, title, tags, description='', updatedAt }) => {
   const updatedAtDate = new Date(updatedAt)
   return (
@@ -38,16 +65,18 @@ const BlogCard: React.FC<blogCardProps> = ({ id, title, tags, description='', up
   )
 }
 
-type blogListType = {
-  posts: blogCardProps[],
-  total: number,
-  currentPage: number,
-  limit: number
+export const metadata: Metadata = {
+  title: '記事一覧 - Love Beautiful Code',
+  description: '記事一覧'
 }
-const BlogList: React.FC<blogListType> = ({ posts, total, currentPage, limit }) => {
+
+const BlogList = async () => {
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page') || 1);
+  const { posts, total } = await getPosts(currentPage)
+
   return (
     <>
-      <HeadContent title='記事一覧 - Love Beautiful Code' description='記事一覧' />
       {posts.length ? (
         <>
           {posts.map(post => {
@@ -55,7 +84,7 @@ const BlogList: React.FC<blogListType> = ({ posts, total, currentPage, limit }) 
             return <BlogCard key={id} id={id} title={title} description={description} tags={tags} updatedAt={updatedAt} />
           })}
           <Box mt={8}>
-            <Paginator path='/posts' total={total} currentPage={currentPage} limit={limit} />
+            <Paginator path='/posts' total={total} currentPage={currentPage} limit={POSTS_PER_PAGE} />
           </Box>
         </>
       ) : (
@@ -65,26 +94,3 @@ const BlogList: React.FC<blogListType> = ({ posts, total, currentPage, limit }) 
   )
 }
 export default BlogList
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const CONTENT_LIMIT = 10
-  const page = Number(query?.page || 1)
-  const contentfulQuery = {
-    content_type: 'blog',
-    limit: CONTENT_LIMIT,
-    order: '-sys.createdAt',
-    skip: (page - 1) * CONTENT_LIMIT
-  }
-  const response = await contentfulClient.getEntries(contentfulQuery)
-    .then((response: EntryCollection<EntryFields.Object>) => response)
-    .catch(err => console.error(err))
-  const items = response?.items
-  const total = response?.total
-  if (!items) return { notFound: true }
-  const posts = items.map(item => {
-    const { id, updatedAt } = item.sys
-    const { title, description, tags } = item.fields
-    return { id, updatedAt, title, description, tags }
-  })
-  return { props: { posts: posts, currentPage: page, total, limit: CONTENT_LIMIT } }
-}
