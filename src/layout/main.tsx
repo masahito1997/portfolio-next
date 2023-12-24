@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
 
-import { Box, Container } from '@chakra-ui/react'
 import Header from '../components/header'
 
 type MainProps = {
@@ -32,12 +31,12 @@ const Main: React.FC<MainProps> = ({ children }) => {
         }} />
       </Head>
 
-      <Box as='main' pb={8}>
-        <Container maxW='container.md' pt={2}>
+      <main className='pb-8 flex justify-center'>
+        <div className='max-w-4xl p-4'>
           <Header />
           {children}
-        </Container>
-      </Box>
+        </div>
+      </main>
     </>
   )
 }
