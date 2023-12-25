@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
-import { Text, Box, Flex, Image, LinkBox, LinkOverlay, Heading, Tag } from '@chakra-ui/react'
 import { EntryFields, Asset, Entry } from 'contentful'
 
 import contentfulClient from '../../src/lib/contentful_client'
 import HeadContent from '../../src/components/head_content'
+import Link from "next/link";
 
 type WorkState = {
   works: EntryFields.Array<EntryFields.Object>
@@ -64,39 +64,37 @@ export default class Work extends React.Component<{}, WorkState> {
       <>
         <HeadContent title='Works - Love Beautiful Code' description='作品一覧' />
         {this.state.works.length || this.state.thumbnailLinks.length ? (
-          <>
-            <Box w='100%'>
-              <Heading as='h1' size='md' mb={8}>ポートフォリオ</Heading>
-              <Flex direction={{ base: 'column', md: 'row' }} justifyContent='space-between'>
-                {this.state.works.map((work: EntryFields.Object) => {
-                  const { name, thumbnail, libs, link, description } = work.fields
+          <div className='w-full'>
+            <h1 className='text-3xl font-bold mb-8'>ポートフォリオ</h1>
+            <div className='flex flex-col md:flex-row justify-between'>
+              {this.state.works.map((work: EntryFields.Object) => {
+                const { name, thumbnail, libs, link, description } = work.fields
 
-                  return (
-                    <LinkBox key={name} as='article' borderWidth='3px' rounded='md' h='auto' maxH={{ base: '400px', md: '500px' }} w={{ base: '100%', md: '45%' }} mb={{ base: 5, md: 0 }}>
-                      <Image borderBottomWidth='2px' alt='thumbnail' src={thumbnail && thumbnail.sys.id ? (this.state.thumbnailLinks[thumbnail.sys.id]) : '/images/portfolio_icon1.jpg'} borderTopRadius='md' h='50%' w='100%' fit='fill' />
-                      <Box p={4}>
-                        <Heading as='h4' size='md' mb={2}>
-                          <LinkOverlay href={link} isExternal>
-                            {name}
-                          </LinkOverlay>
-                        </Heading>
-                        <Text fontSize='sm' noOfLines={{ base: 4, md: 3 }}>{description}</Text>
-                        <Flex flexWrap='wrap' mt={4} alignItems='baseline'>
-                          <Heading as='h6' size='sm' mr={1}>使用技術:</Heading>
-                          {libs.length ? (
-                            libs.map((lib: string) => <Tag colorScheme='green' size='sm' mr={1} mb={1} key={lib}>{lib}</Tag>)
-                          ) : ''}
-                        </Flex>
-                      </Box>
-                    </LinkBox>
-                  )})}
-              </Flex>
-            </Box>
-          </>
+                return (
+                  <article key={name} className='relative border-2 rounded h-auto max-h-[400px] md:max-h-[500px] w-full md:w-5/12 mb-5 md:mb-0'>
+                    <img src={thumbnail && thumbnail.sys.id ? (this.state.thumbnailLinks[thumbnail.sys.id]) : '/images/portfolio_icon1.jpg'} className='border-b-2 rounded-t-md h-1/2 w-full object-fill' />
+                    <div className='p-4'>
+                      <h4 className='mb-2 text-xl font-bold'>
+                        <Link href={link} passHref className='static before:block before:w-full before:h-full before:absolute before:top-0 before:left-0 before:z-0'>
+                          {name}
+                        </Link>
+                      </h4>
+                      <p className='text-sm line-clamp-4 md:line-clamp-3'>{description}</p>
+                      <div className='flex flex-wrap mt-4 items-baseline'>
+                        <h6 className='text-sm mr-1 font-bold'>使用技術:</h6>
+                        {libs.length ? (
+                          libs.map((lib: string) => <span key={lib} className='rounded bg-green-400/20 text-green-300 px-2 py-0.5 text-xs mr-1 mb-1'>{lib}</span>)
+                        ) : ''}
+                      </div>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </div>
         ) : (
-          <Text fontSize='sm' color='gray.400' textAlign='center'>現在、表示できるPortfolioがありません</Text>
-        )
-        }
+          <p className='text-md text-gray-400 text-center'>現在、表示できるPortfolioがありません</p>
+        )}
       </>
     )
   }
