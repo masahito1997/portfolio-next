@@ -1,42 +1,16 @@
 import React from 'react'
-import { Heading } from "@chakra-ui/react";
 import { Components } from 'react-markdown'
 
-type headingThemeProps = {
-  level: number,
-  children?: React.ReactNode
-}
-const headingTheme: React.FC<headingThemeProps> = (props, as) => {
-  const { level, children } = props
-  const sizes = ['xl', 'lg', 'md', 'sm', 'xs', 'xs']
-  let marginTop
-  if (['h1', 'h2'].includes(as)) {
-    marginTop = 10
-  } else if (['h3', 'h4'].includes(as)) {
-    marginTop = 8
-  } else {
-    marginTop = 6
-  }
-  return (
-    <Heading
-      mb={4}
-      mt={marginTop}
-      size={sizes[level-1]}
-      as={as}
-      pb={as === 'h2' ? 2 : 0}
-      borderBottomWidth={as === 'h2' ? 1 : 0}
-    >
-      {children}
-    </Heading>
-  )
-}
-
 const markdownTheme: Components = {
-  h1: (props: any) => headingTheme(props, 'h1'),
-  h2: (props: any) => headingTheme(props, 'h2'),
-  h3: (props: any) => headingTheme(props, 'h3'),
-  h4: (props: any) => headingTheme(props, 'h4'),
-  h5: (props: any) => headingTheme(props, 'h5'),
-  h6: (props: any) => headingTheme(props, 'h6'),
+  h1: ({ children }: any) => <h1 className='mb-4 mt-10 text-2xl pb-0 border-b-0'>{children}</h1>,
+  h2: ({ children }: any) => <h2 className='mb-8 mt-10 text-xl'><span className='pb-2 border-white border-b'>{children}</span></h2>,
+  h3: ({ children }: any) => <h3 className='mb-4 mt-8 text-lg pb-0 border-b-0'>{children}</h3>,
+  h4: ({ children }: any) => <h4 className='mb-4 mt-8 text-md pb-0 border-b-0'>{children}</h4>,
+  h5: ({ children }: any) => <h5 className='mb-4 mt-6 text-sm pb-0 border-b-0'>{children}</h5>,
+  h6: ({ children }: any) => <h6 className='mb-4 mt-6 text-xs pb-0 border-b-0'>{children}</h6>,
+  table: ({ children }: any) => <table className='w-full border-collapse border-white'>{children}</table>,
+  tr: ({ children }: any) => <tr className='border-collapse border-white border-b'>{children}</tr>,
+  td: ({ children }: any) => <td className='py-4 px-10'>{children}</td>,
+  ul: ({ children }: any) => <ul className='list-none ml-4 pl-4 mb-2'>{children}</ul>,
 }
 export default markdownTheme
