@@ -1,15 +1,13 @@
 import React from 'react'
 
-import { Heading, Box, Text } from '@chakra-ui/react'
-
 const custom404: React.FC = () => {
   return (
-    <Box>
-      <Heading as='h2' size='4xl' textAlign='center' mb={2}>404</Heading>
-      <Heading as='h3' size='lg' textAlign='center' mb={6}>Page Not Found</Heading>
-      <Text textAlign='center'>ページが見つかりませんでした。</Text>
-      <Text textAlign='center'>URLが変更・削除されたか、現在ご利用できない可能性があります。</Text>
-    </Box>
+    <div>
+      <h2 className='text-6xl text-center mb-2'>405</h2>
+      <h3 className='text-xl text-center mb-6'>Page Not Found</h3>
+      <p className='text-center'>ページが見つかりませんでした。</p>
+      <p className='text-center'>URLが変更・削除されたか、現在ご利用できない可能性があります。</p>
+    </div>
   )
 }
 export default custom404
