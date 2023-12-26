@@ -31,7 +31,7 @@ const Main: React.FC<MainProps> = ({ children }) => {
         }} />
       </Head>
 
-      <main className='pb-8 flex justify-center'>
+      <main className='pb-8 flex justify-center bg-dark text-slate-200 font-body'>
         <div className='max-w-4xl p-4'>
           <Header />
           {children}

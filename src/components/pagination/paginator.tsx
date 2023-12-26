@@ -1,5 +1,4 @@
 import React from 'react'
-import { Flex, ButtonGroup } from '@chakra-ui/react'
 
 import { paginatorType, FirstPage, PreviousPage, NextPage, LastPage, NumberPager } from './page_operator'
 
