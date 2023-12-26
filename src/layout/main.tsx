@@ -7,7 +7,6 @@ type MainProps = {
   children: React.ReactNode
 }
 const Main: React.FC<MainProps> = ({ children }) => {
-  const GA_ID = process.env.NEXT_PUBLIC_GA_ID as string
   return (
     <>
       <Head>
