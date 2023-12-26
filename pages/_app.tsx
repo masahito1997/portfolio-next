@@ -4,6 +4,12 @@ import Main from '../src/layout/main'
 
 import Fonts from '../src/lib/font';
 
+declare global {
+  interface Window {
+    dataLayer: Array<any>;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>

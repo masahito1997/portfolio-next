@@ -25,27 +25,21 @@ a {
   background-color: white;
   color: #2d2d2d;
   padding: 2rem;
+}
 
-  td, th {
-    border-bottom: 1px solid #555;
+.resume-pdf-content td, .resume-pdf-content th {
+  border-bottom: 1px solid #555;
+}
+
+@media screen and (max-width: 48em) {
+  .resume-pdf-content .resume-content table thead {
+    display: none;
   }
-  .resume-content {
-    @media screen and (max-width: 48em) {
-      table {
-        thead {
-          display: none;
-        }
-        tbody {
-          tr {
-            display: flex;
-            flex-direction: column;
-          }
-
-          td {
-            padding: 1rem;
-          }
-        }
-      }
-    }
+  .resume-pdf-content .resume-content table tbody tr {
+    display: flex;
+    flex-direction: column;
+  }
+  .resume-pdf-content .resume-content table tbody td {
+    padding: 1rem;
   }
 }

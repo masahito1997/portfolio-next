@@ -23,8 +23,6 @@ module.exports = {
       'body': ['"M PLUS Rounded 1c", "Kosugi Maru", Roboto, Arial, sans-serif']
     }
   },
-  plugins: [
-    require('@tailwindcss/line-clamp')
-  ],
+  plugins: [],
 }
 
