@@ -8,11 +8,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Fonts/>
-      <body>
       <Main>
         <Component {...pageProps} />
       </Main>
-      </body>
     </>
 )
 }
