@@ -1,5 +1,4 @@
 import React from 'react'
-import { Flex, ButtonGroup } from '@chakra-ui/react'
 
 import { paginatorType, FirstPage, PreviousPage, NextPage, LastPage, NumberPager } from './page_operator'
 
@@ -8,8 +7,8 @@ const Paginator: React.FC<paginatorType> = (props) => {
 
   const numbers = Array(NumberPager.calcLastPageNumber(props.total, props.limit)).fill(0).map((_, i) => i + 1)
   return (
-    <Flex justifyContent='center' w='100%'>
-      <ButtonGroup spacing='unset' isAttached>
+    <div className='flex justify-center w-full'>
+      <div className='inline-flex'>
         <FirstPage {...props} />
         <PreviousPage {...props} />
         {numbers.map((number) => (
@@ -17,8 +16,8 @@ const Paginator: React.FC<paginatorType> = (props) => {
         ))}
         <NextPage {...props} />
         <LastPage {...props} />
-      </ButtonGroup>
-    </Flex>
+      </div>
+    </div>
   )
 }
 export default Paginator

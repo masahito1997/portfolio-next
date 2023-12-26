@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 
-import { Box } from '@chakra-ui/react'
 import Profile from '../src/components/home/profile'
 import Work from '../src/components/home/work'
 import Bio from '../src/components/home/bio'
@@ -13,13 +12,13 @@ const Home: NextPage = () => {
   return (
     <>
       <HeadContent />
-      <Box>
+      <div>
         <Profile />
         <Work />
         <Bio />
         <Skill />
         <Love />
-      </Box>
+      </div>
     </>
   )
 }

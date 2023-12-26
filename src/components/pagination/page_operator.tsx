@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import { Button } from '@chakra-ui/react'
 
 export interface paginatorType {
   currentPage: number,
@@ -30,7 +29,7 @@ class PagerAbstract extends React.Component<paginatorType> {
 
   static calcLastPageNumber(total: number, limit: number) {
     const [div, mod] = [total / limit, total % limit]
-    return mod === 0 ? div : div + 1
+    return parseInt(mod === 0 ? div.toString() : (div + 1).toString())
   }
 
   isFirst(): boolean {
@@ -54,14 +53,29 @@ class PagerAbstract extends React.Component<paginatorType> {
   }
 
   disableComponent() {
-    return <Button isDisabled>{this.content}</Button>
+    return this.buttonComponent(false, true)
+  }
+
+  roundedDirection(): string {
+    return 'rounded-none'
   }
 
   linkComponent() {
     return (
       <Link href={this.linkPath()} passHref>
-        <Button>{this.content}</Button>
+        {this.buttonComponent()}
       </Link>
+    )
+  }
+
+  buttonComponent(isActive = false, isDisabled = false) {
+    let cssClass = ''
+    if (isActive) cssClass += 'bg-gray-300/20'
+    if (isDisabled) cssClass += 'bg-gray-600/20'
+    if (!isActive && !isDisabled) cssClass += 'hover:opacity-75'
+
+    return (
+      <button className={`py-2 px-4 bg-gray-400/20 ${this.roundedDirection()} ${cssClass}`} disabled={isDisabled}>{this.content}</button>
     )
   }
 
@@ -79,6 +93,10 @@ class FirstPage extends PagerAbstract {
 
   isDisabled(): boolean {
     return this.isFirst()
+  }
+
+  roundedDirection(): string {
+    return 'rounded-l-md'
   }
 
   linkPageNumber(): number {
@@ -126,6 +144,10 @@ class LastPage extends PagerAbstract {
   linkPageNumber(): number {
     return this.lastPageNumber
   }
+
+  roundedDirection(): string {
+    return 'rounded-r-md'
+  }
 }
 class NumberPager extends PagerAbstract {
   constructor(props: paginatorType) {
@@ -144,7 +166,7 @@ class NumberPager extends PagerAbstract {
   }
 
   activeComponent() {
-    return <Button isActive>{this.content}</Button>
+    return this.buttonComponent(true, false)
   }
 
   render(): React.ReactNode {

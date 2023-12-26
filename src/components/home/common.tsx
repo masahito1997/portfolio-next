@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { Flex, Heading } from '@chakra-ui/react'
-
 type panelContainerProps = {
   children: React.ReactNode,
   title: string,
@@ -9,14 +7,14 @@ type panelContainerProps = {
 }
 
 const PanelContainer: React.FC<panelContainerProps> = ({ title, children, icon = null }) => (
-  <Flex flexDirection='column' alignItems='flex-start' mt={10} px={{ base: 0, md: 5 }} py={2}>
-    <Heading size='md' as='h3' borderBottomWidth='3px' borderBottomColor='#ddd' mb={4}>
+  <div className='flex flex-col items-start mt-10 px-0 md:px-5 py-2'>
+    <h3 className='border-b-2 border-b-[#ddd] mb-4 font-bold text-xl'>
       {title}
       {icon ? icon : ''}
-    </Heading>
+    </h3>
 
     {children}
-  </Flex>
+  </div>
 )
 export {
   PanelContainer
