@@ -7,6 +7,7 @@ import contentfulClient from '../../src/lib/contentful_client'
 import Paginator from '../../src/components/pagination/paginator'
 import NotFound from "../not-found";
 import BlogCard from "./blogCard";
+import {notFound} from "next/navigation";
 
 export const metadata: Metadata = {
   ...metadataBase,
@@ -33,7 +34,7 @@ const getBlogs = async (page: number) => {
   const response: EntryCollection<EntryFields.Object<Blog>> = await contentfulClient.getEntries(contentfulQuery)
   if (response.errors) {
     console.log(response.errors);
-    return NotFound();
+    return undefined;
   }
 
   const items = response.items
@@ -43,7 +44,7 @@ const getBlogs = async (page: number) => {
     const { title, description, tags } = item.fields
     return { id, updatedAt, title, description, tags }
   })
-  return { posts: posts, total, limit: CONTENT_LIMIT }
+  return { posts, total, limit: CONTENT_LIMIT }
 }
 
 type BlogListProps = {
@@ -53,12 +54,17 @@ type BlogListProps = {
 }
 const BlogList = async (props: BlogListProps) => {
   const searchParams = props.searchParams;
-  const page: number = Number(searchParams.page || '1')
-  const { posts, total, limit } = await getBlogs(page)
+  const page = Number(searchParams.page || '1')
+  const blogListObject = await getBlogs(page)
+  if (!blogListObject) {
+    notFound();
+  }
+
+  const { posts, total, limit } = blogListObject;
 
   return (
     <>
-      {posts.length ? (
+      {posts && posts.length ? (
         <>
           {posts.map(post => {
             const { id, title, description, updatedAt, tags } = post

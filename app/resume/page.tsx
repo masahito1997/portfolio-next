@@ -5,7 +5,7 @@ import ResumePage from './resumePage'
 
 import { Metadata } from "next";
 import { metadata as metadataBase } from '../layout'
-import NotFound from "../not-found";
+import {notFound} from "next/navigation";
 
 export const metadata: Metadata = {
   ...metadataBase,
@@ -13,25 +13,31 @@ export const metadata: Metadata = {
   description: '職務経歴書'
 }
 
+type ResumeType = {
+  markdown: string;
+}
+
 const getResume = async () => {
   const id = String(process.env.NEXT_PUBLIC_RESUME_CONTENTFUL_ID);
 
-  let resumeMarkdown: string;
-  await contentfulClient
-    .getEntry(id)
-    .then((response: Entry<EntryFields.Object>) => {
+  return await contentfulClient
+    .getEntry<ResumeType>(id)
+    .then((response) => {
       const { markdown } = response.fields;
-      resumeMarkdown = markdown;
+      return markdown;
     })
     .catch((err) => {
       console.error(err);
-      return NotFound();
+      return undefined;
     });
-  return resumeMarkdown;
 }
 
 const Resume = async () => {
   const markdown = await getResume();
+  if (!markdown) {
+    notFound();
+  }
+
   return <ResumePage markdown={markdown} />
 };
 
