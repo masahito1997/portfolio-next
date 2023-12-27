@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { EntryCollection, EntryFields } from 'contentful'
 
 import { Metadata } from 'next'

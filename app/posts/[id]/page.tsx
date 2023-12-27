@@ -1,4 +1,3 @@
-import React from 'react'
 import { Metadata } from 'next'
 
 import contentfulClient from '../../../src/lib/contentful_client'

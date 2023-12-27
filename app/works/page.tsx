@@ -1,4 +1,3 @@
-import React from 'react'
 import { EntryFields, Asset, Entry } from 'contentful'
 
 import contentfulClient from '../../src/lib/contentful_client'
