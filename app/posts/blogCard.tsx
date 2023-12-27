@@ -3,7 +3,14 @@
 import React from "react";
 import Link from "next/link";
 
-const BlogCard = ({ id, title, tags, description='', updatedAt }) => {
+type BlogCardType = {
+  id: string;
+  title: string;
+  tags: string[];
+  description?: string;
+  updatedAt: string;
+}
+const BlogCard: React.FC<BlogCardType> = ({ id, title, tags, description='', updatedAt }) => {
   const updatedAtDate = new Date(updatedAt)
 
   return (
