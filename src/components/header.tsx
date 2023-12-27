@@ -1,6 +1,17 @@
+'use client'
+
 import React, {useState} from 'react'
 
+import { Dancing_Script } from 'next/font/google'
+
 import Link from 'next/link'
+
+const dancingScriptFont = Dancing_Script({
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
+  subsets: ['latin', 'latin-ext', 'vietnamese']
+})
 
 type HeaderLinkProps = {
   href: string,
@@ -46,7 +57,7 @@ const Header: React.FC = () => {
         </div>
       </nav>
       <div>
-        <h1 className='text-center mt-20 md:mt-40 mb-20 font-header font-bold text-3xl md:text-4xl'>
+        <h1 className={`text-center mt-20 md:mt-40 mb-20 font-bold text-3xl md:text-4xl ${dancingScriptFont.className}`}>
           Love Beautiful Code
         </h1>
       </div>

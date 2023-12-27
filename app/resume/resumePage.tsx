@@ -1,25 +1,16 @@
-import React, {
-  useRef,
-  useCallback,
-} from "react";
+'use client'
 
-import ReactToPrint from "react-to-print";
+import React, {useCallback, useRef} from "react";
 import ReactMarkdown from "react-markdown";
-import gfm from "remark-gfm";
-
-import { GetStaticProps } from "next";
-
 import markdownTheme from "../../src/lib/markdown_theme";
-import contentfulClient from "../../src/lib/contentful_client";
-import { Entry, EntryFields } from "contentful";
+import gfm from "remark-gfm";
+import ReactToPrint from "react-to-print";
 
-import HeadContent from '../../src/components/head_content'
-
-type resumeContentType = {
+type ResumePageType = {
   markdown: string;
-};
+}
 
-const Resume: React.FC<resumeContentType> = ({ markdown }) => {
+const ResumePage: React.FC<ResumePageType> = ({ markdown }) => {
   const resumeRef = useRef<HTMLDivElement>(null);
 
   const printContent = useCallback(
@@ -37,14 +28,12 @@ const Resume: React.FC<resumeContentType> = ({ markdown }) => {
             </svg>
           </span>
         </button>
-        {/*<Button rightIcon={<DownloadIcon/>}>Download</Button>*/}
       </div>
     ), []
   );
 
   return (
     <>
-      <HeadContent title='Resume - Love Beautiful Code' description="職務経歴書"/>
       <div
         ref={resumeRef}
         style={{marginBottom: "50px"}}
@@ -68,19 +57,4 @@ const Resume: React.FC<resumeContentType> = ({ markdown }) => {
     </>
   );
 };
-export default Resume;
-
-export const getStaticProps: GetStaticProps = async () => {
-  const id = String(process.env.NEXT_PUBLIC_RESUME_CONTENTFUL_ID);
-  const resume = await contentfulClient
-    .getEntry(id)
-    .then((response: Entry<EntryFields.Object>) => {
-      const { markdown } = response.fields;
-      return { markdown };
-    })
-    .catch((err) => {
-      console.error(err);
-      return { notFound: true };
-    });
-  return { props: resume };
-};
+export default ResumePage;
