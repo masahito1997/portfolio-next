@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   description: '作品一覧'
 }
 
-const WorkHoge = async () => {
+const Work = async () => {
   const { works, thumbnailLinks } = await getWorks();
 
   return (
@@ -111,3 +111,4 @@ const WorkHoge = async () => {
     </>
   )
 }
+export default Work;
