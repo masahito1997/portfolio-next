@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useState} from 'react'
 
 import { Dancing_Script } from 'next/font/google'
