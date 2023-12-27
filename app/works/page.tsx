@@ -1,12 +1,10 @@
-import { EntryFields, Asset, Entry } from 'contentful'
-
 import contentfulClient from '../../src/lib/contentful_client'
 import Link from "next/link";
 
 import { metadata as metadataBase } from "../layout";
 import {Metadata} from "next";
 
-type Work = {
+type WorkFieldType = {
   name: string;
   thumbnail: {
     sys: {
@@ -17,51 +15,50 @@ type Work = {
   link: string;
   description: string;
 }
-type ThumbnailLink = { [id: string]: string }
+type WorkType = {
+  name: string;
+  libs: string[];
+  link: string;
+  description: string;
+  thumbnailLink?: string;
+}
 
-const getWorks = () => {
+const getWorks = async () => {
   const query = {
     content_type: 'work',
     order: '-sys.createdAt'
   }
-  let works: EntryFields.Object<Work>[] = [];
-  let thumbnailLinks: ThumbnailLink = {}
+  const worksResponse = await contentfulClient.getEntries<WorkFieldType>(query)
+  const works = worksResponse.items
 
-  contentfulClient
-    .getEntries(query)
-    .then((response: EntryFields.Object): Promise<string[]> => {
-      works = response.items as EntryFields.Object<Work>[]
+  const thumbnailLinks: Promise<WorkType>[] = works.map(work => {
+    const { name, thumbnail, libs, link, description } = work.fields
 
-      return new Promise((resolve, reject) => {
-        if (response.items.length) {
-          resolve(
-            response.items.map((work: Entry<EntryFields.Object>) => {
-              const { thumbnail } = work.fields
-              if (!thumbnail) return
-
-              return thumbnail.sys.id
-            })
-          )
-        } else {
-          reject(Error('error: without items.'))
-        }
-      })
-    })
-    .then((thumbnailIds: string[]): Promise<Promise<Asset>[]> => {
-      const thumbnails = thumbnailIds.map((thumbnailId: string) => contentfulClient.getAsset(thumbnailId))
-      return new Promise(resolve => resolve(thumbnails))
-    })
-    .then((thumbnails: Promise<Asset>[]) => {
-      Promise.all(thumbnails).then((assets: Asset[]) => {
-        assets.forEach((asset: Asset) => {
-          thumbnailLinks[asset.sys.id] = asset.fields.file.url
+    return new Promise((resolve, _reject) => {
+      if (thumbnail) {
+        contentfulClient.getAsset(thumbnail.sys.id).then(asset => {
+          const result: WorkType = {
+            name,
+            libs,
+            link,
+            description,
+            thumbnailLink: asset.fields.file.url
+          }
+          resolve(result)
         })
-      })
-      .catch(err => console.error(err))
+      } else {
+        const result: WorkType = {
+          name,
+          libs,
+          link,
+          description,
+        }
+        resolve(result)
+      }
     })
-    .catch(err => console.error(err))
+  })
 
-  return { works, thumbnailLinks }
+  return await Promise.all(thumbnailLinks);
 }
 
 export const metadata: Metadata = {
@@ -71,20 +68,20 @@ export const metadata: Metadata = {
 }
 
 const Work = async () => {
-  const { works, thumbnailLinks } = await getWorks();
+  const works = await getWorks();
 
   return (
     <>
-      {works.length || thumbnailLinks.length ? (
+      {works && works.length ? (
         <div className='w-full'>
           <h1 className='text-3xl font-bold mb-8'>ポートフォリオ</h1>
           <div className='flex flex-col md:flex-row justify-between'>
-            {works.map((work: EntryFields.Object) => {
-              const { name, thumbnail, libs, link, description } = work.fields
+            {works.map((work) => {
+              const { name, libs, link, description, thumbnailLink } = work
 
               return (
                 <article key={name} className='relative border-2 rounded h-auto max-h-[400px] md:max-h-[500px] w-full md:w-5/12 mb-5 md:mb-0'>
-                  <img src={thumbnail && thumbnail.sys.id ? (thumbnailLinks[thumbnail.sys.id]) : '/images/portfolio_icon1.jpg'} className='border-b-2 rounded-t-md h-1/2 w-full object-fill' />
+                  <img src={thumbnailLink ? (thumbnailLink) : '/images/portfolio_icon1.jpg'} className='border-b-2 rounded-t-md h-1/2 w-full object-fill' />
                   <div className='p-4'>
                     <h4 className='mb-2 text-xl font-bold'>
                       <Link href={link} passHref className='static before:block before:w-full before:h-full before:absolute before:top-0 before:left-0 before:z-0'>
