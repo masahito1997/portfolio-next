@@ -7,7 +7,7 @@ import { Dancing_Script } from 'next/font/google'
 import Link from 'next/link'
 
 const dancingScriptFont = Dancing_Script({
-  weight: '700',
+  weight: '400',
   style: 'normal',
   display: 'swap',
   subsets: ['latin', 'latin-ext', 'vietnamese']
