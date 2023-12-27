@@ -26,11 +26,11 @@ export const metadata: Metadata = {
 function MyApp({ children }: { children: ReactNode }) {
   return (
     <html>
-    <head>
-      <link rel="icon" href="/favicon.ico" sizes="any"/>
-    </head>
-    <body>
-    <main className={`pb-8 flex justify-center bg-dark text-slate-200 ${mPlusRounded1c.className}`}>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any"/>
+      </head>
+      <body>
+        <main className={`pb-8 flex justify-center bg-dark text-slate-200 ${mPlusRounded1c.className}`}>
           <div className='max-w-4xl p-4'>
             <Header/>
             {children}
