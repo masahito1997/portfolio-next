@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 
 import { paginatorType, FirstPage, PreviousPage, NextPage, LastPage, NumberPager } from './page_operator'
