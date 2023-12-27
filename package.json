@@ -8,8 +8,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
     "@types/react-syntax-highlighter": "^13.5.2",
     "contentful": "^9.1.6",
     "next": "^14.0.4",
