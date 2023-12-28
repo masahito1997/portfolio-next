@@ -4,7 +4,6 @@ import {Metadata} from "next";
 import { M_PLUS_Rounded_1c } from 'next/font/google'
 
 import { ReactNode } from "react";
-import Header from "../src/components/header";
 
 const mPlusRounded1c = M_PLUS_Rounded_1c({
   weight: ['400', '700'],
