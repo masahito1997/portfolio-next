@@ -5,9 +5,9 @@ import { Metadata } from 'next'
 import { metadata as metadataBase } from '../layout'
 import contentfulClient from '../../src/lib/contentful_client'
 import Paginator from '../../src/components/pagination/paginator'
-import NotFound from "../not-found";
 import BlogCard from "./blogCard";
 import {notFound} from "next/navigation";
+import Header from "../../src/components/header";
 
 export const metadata: Metadata = {
   ...metadataBase,
@@ -64,6 +64,7 @@ const BlogList = async (props: BlogListProps) => {
 
   return (
     <>
+      <Header />
       {posts && posts.length ? (
         <>
           {posts.map(post => {

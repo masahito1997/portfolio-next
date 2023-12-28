@@ -31,8 +31,7 @@ function MyApp({ children }: { children: ReactNode }) {
       </head>
       <body>
         <main className={`pb-8 flex justify-center bg-dark text-slate-200 ${mPlusRounded1c.className}`}>
-          <div className='max-w-4xl p-4'>
-            <Header/>
+          <div className='max-w-4xl md:max-w-4xl p-4'>
             {children}
           </div>
         </main>
