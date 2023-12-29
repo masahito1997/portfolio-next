@@ -1,11 +1,11 @@
 import contentfulClient from "../../src/lib/contentful_client";
-import { Entry, EntryFields } from "contentful";
 
 import ResumePage from './resumePage'
 
 import { Metadata } from "next";
 import { metadata as metadataBase } from '../layout'
 import {notFound} from "next/navigation";
+import Header from "../../src/components/header";
 
 export const metadata: Metadata = {
   ...metadataBase,
@@ -38,7 +38,12 @@ const Resume = async () => {
     notFound();
   }
 
-  return <ResumePage markdown={markdown} />
+  return (
+    <>
+      <Header />
+      <ResumePage markdown={markdown} />
+    </>
+  )
 };
 
 export default Resume;

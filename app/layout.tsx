@@ -4,7 +4,6 @@ import {Metadata} from "next";
 import { M_PLUS_Rounded_1c } from 'next/font/google'
 
 import { ReactNode } from "react";
-import Header from "../src/components/header";
 
 const mPlusRounded1c = M_PLUS_Rounded_1c({
   weight: ['400', '700'],
@@ -31,8 +30,7 @@ function MyApp({ children }: { children: ReactNode }) {
       </head>
       <body>
         <main className={`pb-8 flex justify-center bg-dark text-slate-200 ${mPlusRounded1c.className}`}>
-          <div className='max-w-4xl p-4'>
-            <Header/>
+          <div className='max-w-4xl md:min-w-4xl p-4'>
             {children}
           </div>
         </main>

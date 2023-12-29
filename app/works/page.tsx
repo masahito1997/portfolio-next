@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { metadata as metadataBase } from "../layout";
 import {Metadata} from "next";
+import Header from "../../src/components/header";
 
 type WorkFieldType = {
   name: string;
@@ -72,6 +73,7 @@ const Work = async () => {
 
   return (
     <>
+      <Header/>
       {works && works.length ? (
         <div className='w-full'>
           <h1 className='text-3xl font-bold mb-8'>ポートフォリオ</h1>

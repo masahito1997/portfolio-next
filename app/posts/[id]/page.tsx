@@ -4,6 +4,7 @@ import contentfulClient from '../../../src/lib/contentful_client'
 import {metadata as metadataBase} from "../../layout";
 import BlogDetail from "./blogDetail";
 import {notFound} from "next/navigation";
+import Header from "../../../src/components/header";
 
 // TODO: 記事のタイトルとdescriptionを登録できるようにする
 export const metadata: Metadata = {
@@ -37,7 +38,12 @@ const Blog = async (props: BlogProps) => {
   }
 
   const { title, description, tags, markdown, updatedAt } = blogObject;
-  return <BlogDetail title={title} description={description} tags={tags} markdown={markdown} updatedAt={updatedAt} />
+  return (
+    <>
+      <Header />
+      <BlogDetail title={title} description={description} tags={tags} markdown={markdown} updatedAt={updatedAt} />
+    </>
+  )
 }
 export default Blog;
 
