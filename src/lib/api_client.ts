@@ -9,7 +9,6 @@ type apiRequestInit = {
 }
 const useClient = () => {
   const apiToken = process.env.NEXT_PUBLIC_API_TOKEN;
-  console.log(apiToken)
   const apiHost = process.env.NEXT_PUBLIC_API_HOST;
   if (!apiToken || !apiHost) {
     throw new Error("API Token not found");
