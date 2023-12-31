@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import useClient from '../../../src/lib/api_client'
+import useApiClient from '../../../src/lib/api_client'
 
 type BlogType = {
   title: string
@@ -9,7 +9,7 @@ type BlogType = {
 }
 const getBlogs = async (page: number) => {
   try {
-    const client = useClient()
+    const client = useApiClient()
     return await client.get('/admin/articles', { page: page }) as BlogType[]
   } catch (e) {
     console.log(e)

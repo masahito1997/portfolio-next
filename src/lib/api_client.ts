@@ -7,7 +7,7 @@ type apiRequestInit = {
   },
   body?: string,
 }
-const useClient = () => {
+const useApiClient = () => {
   const apiToken = process.env.NEXT_PUBLIC_API_TOKEN;
   const apiHost = process.env.NEXT_PUBLIC_API_HOST;
   if (!apiToken || !apiHost) {
@@ -65,4 +65,4 @@ const useClient = () => {
     },
   }
 }
-export default useClient;
+export default useApiClient;
