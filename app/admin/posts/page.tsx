@@ -1,10 +1,20 @@
 import Link from 'next/link'
+import useApiClient from '../../../src/lib/api_client'
 
-const getBlogs = (_page: number) => {
-  return [
-    { handle: 'jdsklfjkadsj', title: '誰でもわかるOAuth認証 入門', tags: ['aaa', 'bbb', 'ccc'], updatedAt: '2023/12/22' },
-    { handle: 'eioesafjsdkl', title: '分離レベルについて理解したい', tags: ['aaaaaa', 'bbbcc', 'cccddd'], updatedAt: '2023/12/21' },
-  ]
+type BlogType = {
+  title: string
+  handle: string
+  tags: string[]
+  updatedAt: string
+}
+const getBlogs = async (page: number) => {
+  try {
+    const client = useApiClient()
+    return await client.get('/admin/articles', { page: page }) as BlogType[]
+  } catch (e) {
+    console.log(e)
+    return []
+  }
 }
 
 type AdminPostsSearchParams = {
@@ -12,8 +22,8 @@ type AdminPostsSearchParams = {
     page?: string
   }
 }
-const AdminPosts = ({ searchParams }: AdminPostsSearchParams) => {
-  const blogs = getBlogs(Number(searchParams.page || '1'))
+const AdminPosts = async ({ searchParams }: AdminPostsSearchParams) => {
+  const blogs = await getBlogs(Number(searchParams.page || '1'))
 
   return (
     <>
@@ -40,20 +50,20 @@ const AdminPosts = ({ searchParams }: AdminPostsSearchParams) => {
             </tr>
           </thead>
           <tbody>
-            {blogs.map(blog => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={blog.title}>
+            {blogs.map(({ title, handle, tags, updatedAt }) => (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={title}>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex flex-col">
-                  <p className='text-sm opacity-75'>id: {blog.handle}</p>
-                  <p className='text-lg mt-1'>{blog.title}</p>
+                  <p className='text-sm opacity-75'>id: {handle}</p>
+                  <p className='text-lg mt-1'>{title}</p>
                 </th>
                 <td className="px-6 py-4">
-                  {blog.tags.join(",")}
+                  {tags.join(",")}
                 </td>
                 <td className="px-6 py-4">
-                  {blog.updatedAt}
+                  {updatedAt}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <Link href={`./posts/${blog.handle}/edit`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</Link>
+                  <Link href={`./posts/${handle}/edit`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</Link>
                 </td>
               </tr>
             ))}

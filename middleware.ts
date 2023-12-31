@@ -8,6 +8,8 @@ export function middleware(req: NextRequest) {
   const basicAuth = req.headers.get("Authorization");
   const url = req.nextUrl;
 
+  if (process.env.NODE_ENV === 'development') return NextResponse.next();
+
   if (basicAuth) {
     const authValue = basicAuth.split(" ")[1];
     const [user, pwd] = atob(authValue).split(":");
