@@ -1,10 +1,20 @@
 import Link from 'next/link'
+import useClient from '../../../src/lib/api_client'
 
-const getBlogs = (_page: number) => {
-  return [
-    { handle: 'jdsklfjkadsj', title: '誰でもわかるOAuth認証 入門', tags: ['aaa', 'bbb', 'ccc'], updatedAt: '2023/12/22' },
-    { handle: 'eioesafjsdkl', title: '分離レベルについて理解したい', tags: ['aaaaaa', 'bbbcc', 'cccddd'], updatedAt: '2023/12/21' },
-  ]
+type BlogType = {
+  title: string
+  handle: string
+  tags: string[]
+  updatedAt: string
+}
+const getBlogs = async (page: number) => {
+  try {
+    const client = useClient()
+    return await client.get('/admin/articles', { page: page }) as BlogType[]
+  } catch (e) {
+    console.log(e)
+    return []
+  }
 }
 
 type AdminPostsSearchParams = {
@@ -12,8 +22,8 @@ type AdminPostsSearchParams = {
     page?: string
   }
 }
-const AdminPosts = ({ searchParams }: AdminPostsSearchParams) => {
-  const blogs = getBlogs(Number(searchParams.page || '1'))
+const AdminPosts = async ({ searchParams }: AdminPostsSearchParams) => {
+  const blogs = await getBlogs(Number(searchParams.page || '1'))
 
   return (
     <>
