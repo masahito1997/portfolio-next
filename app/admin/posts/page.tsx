@@ -50,20 +50,20 @@ const AdminPosts = async ({ searchParams }: AdminPostsSearchParams) => {
             </tr>
           </thead>
           <tbody>
-            {blogs.map(blog => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={blog.title}>
+            {blogs.map(({ title, handle, tags, updatedAt }) => (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={title}>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex flex-col">
-                  <p className='text-sm opacity-75'>id: {blog.handle}</p>
-                  <p className='text-lg mt-1'>{blog.title}</p>
+                  <p className='text-sm opacity-75'>id: {handle}</p>
+                  <p className='text-lg mt-1'>{title}</p>
                 </th>
                 <td className="px-6 py-4">
-                  {blog.tags.join(",")}
+                  {tags.join(",")}
                 </td>
                 <td className="px-6 py-4">
-                  {blog.updatedAt}
+                  {updatedAt}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <Link href={`./posts/${blog.handle}/edit`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</Link>
+                  <Link href={`./posts/${handle}/edit`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">編集</Link>
                 </td>
               </tr>
             ))}
